@@ -78,7 +78,7 @@ MyPage 모듈은 모두 인증 후 요청할 수 있는 모듈입니다.
 클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하고 사용자의 비밀번호를 입력하여 요청하고 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 만약 비밀번호가 일치하지 않는다면 비밀번호 불일치에 대한 응답을 받습니다. 서버 에러, 데이터베이스 에러, 유효성 검사 실패 에러가 발생할 수 있습니다.
 
 - method : **POST**
-- URL : **/~~~**
+- URL : **/~~~/myPage/~**
 
 ##### Request
 
@@ -138,7 +138,7 @@ HTTP/1.1 400 Bad Request
 HTTP/1.1 400 Bad Reuquest
 
 {
-  "code": "PNM",
+  "code": "PN",
   "message": "Password Not Macthed."
 }
 ```
@@ -155,11 +155,11 @@ HTTP/1.1 500 Internal Server Error
 
 ***
 
-#### - 내가 작성한 게시물 리스트 보기
+#### - 내 간략 정보와 내가 작성한 게시물 리스트 보기
 
 ##### 설명 
 
-클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하요 요청하고 조회가 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 서버 에러, 데이터베이스 에러, 인증 실패가 발생할 수 있습니다.
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 요청하고 조회가 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 서버 에러, 데이터베이스 에러, 인증 실패가 발생할 수 있습니다.
 
 - method : **GET**
 - URL : **/~~~**
@@ -187,8 +187,8 @@ curl -v -X GET "http://127.0.0.1:portNum/domain/url" \
 |---|:---:|:---:|:---:|
 | code | String | 응답 결과 코드 | O |
 | message | String | 응답 결과 코드에 대한 설명 | O |
-| userNickname | String | 응답 결과 코드에 대한 설명 | O |
-| userLevel | String | 응답 결과 코드에 대한 설명 | O |
+| userNickname | String | 사용자 닉네임 | O |
+| userLevel | String | 사용자 회원 등급 | O |
 | boards | Board[] | 게시물 리스트 | O |
 
 ###### Board
@@ -197,6 +197,7 @@ curl -v -X GET "http://127.0.0.1:portNum/domain/url" \
 
 | name | type | description | required |
 |---|:---:|:---:|:---:|
+| boardNumber | Integer | 사용자가 작성한 게시글 번호 | O |
 | boardImage | String | 게시글 이미지 | O |
 | userNickname | String | 게시글 작성자 닉네임 | O |
 | userLevel | Integer | 게시글 작성자 회원 등급 | O |
@@ -212,9 +213,10 @@ HTTP/1.1 200 OK
   "code": "SU",
   "message": "Success.",
   "userNickname": "쾌도",
-  "userLevel": 2,
+  "userLevel": 1,
   "boards": [
     {
+      "boardNumber": 1,
       "boardImage": "https://~",
       "userNickname": "쾌도",
       "userLevel": 1,
@@ -223,6 +225,84 @@ HTTP/1.1 200 OK
       "boardViewCount": 10
     }, ...
   ]
+}
+```
+
+**응답 : 실패 (인증 실패)**
+```bash
+HTTP/1.1 401 Unauthorized
+
+{
+  "code": "AF",
+  "message": "Auth Fail."
+}
+```
+
+**응답 : 실패 (데이터베이스 에러)**
+```bash
+HTTP/1.1 500 Internal Server Error
+
+{
+  "code": "DBE",
+  "message": "Database Error."
+}
+```
+
+***
+
+#### - 내가 작성한 게시물의 좋아요 수 보기
+
+##### 설명 
+
+클라이언트는 요청 헤더에 Bearer 인증 토큰과 포함하고 URL에 게시글 번호를 포함하여 요청하고 조회가 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 만약 존재하지 않는 게시글 번호라면 존재하지 않는 게시글에 해당하는 응답을 받습니다. 서버 에러, 데이터베이스 에러, 인증 실패가 발생할 수 있습니다.
+
+- method : **GET**
+- URL : **/{boardNumber}**
+
+##### Request
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Authorization | Bearer 토큰 인증 헤더 | O |
+
+###### Example
+
+```bash
+curl -v -X GET "http://127.0.0.1:portNum/domain/url/{boardNumber}" \
+ -h "Authorization=Bearer XXXX"
+```
+
+##### Response
+
+###### Response Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| code | String | 응답 결과 코드 | O |
+| message | String | 응답 결과 코드에 대한 설명 | O |
+| likes | Integer | 게시물이 받은 좋아요 수 | O |
+
+**응답 성공**
+```bash
+HTTP/1.1 200 OK
+
+{
+  "code": "SU",
+  "message": "Success.",
+  "userNickname": "쾌도",
+  "likes": 2
+}
+```
+
+**응답 : 실패 (존재하지 않는 게시글 에러)**
+```bash
+HTTP/1.1 400 Bad Request
+
+{
+  "code": "NB",
+  "message": "No Exist Board Number."
 }
 ```
 
