@@ -204,6 +204,8 @@ curl -v -X GET "http://127.0.0.1:portNum/domain/url" \
 | boardTitle | String | 게시글 제목 | O |
 | boardWriteDate | String | 게시글 작성 날짜 | O |
 | boardViewCount | Integer | 조회수 | O |
+| likesCount | Integer | 좋아요 수 | O |
+| commentsCount | Integer | 댓글 수 | O |
 
 **응답 성공**
 ```bash
@@ -222,87 +224,11 @@ HTTP/1.1 200 OK
       "userLevel": 1,
       "boardTitle": "안녕하세요.",
       "boardWriteDate": "2025-04-04",
-      "boardViewCount": 10
+      "boardViewCount": 10,
+      "likesCount": 7,
+      "commentsCount": 7
     }, ...
   ]
-}
-```
-
-**응답 : 실패 (인증 실패)**
-```bash
-HTTP/1.1 401 Unauthorized
-
-{
-  "code": "AF",
-  "message": "Auth Fail."
-}
-```
-
-**응답 : 실패 (데이터베이스 에러)**
-```bash
-HTTP/1.1 500 Internal Server Error
-
-{
-  "code": "DBE",
-  "message": "Database Error."
-}
-```
-
-***
-
-#### - 내가 작성한 게시물의 좋아요 수 보기
-
-##### 설명 
-
-클라이언트는 요청 헤더에 Bearer 인증 토큰과 포함하고 URL에 게시글 번호를 포함하여 요청하고 조회가 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 만약 존재하지 않는 게시글 번호라면 존재하지 않는 게시글에 해당하는 응답을 받습니다. 서버 에러, 데이터베이스 에러, 인증 실패가 발생할 수 있습니다.
-
-- method : **GET**
-- URL : **/{boardNumber}**
-
-##### Request
-
-###### Header
-
-| name | description | required |
-|---|:---:|:---:|
-| Authorization | Bearer 토큰 인증 헤더 | O |
-
-###### Example
-
-```bash
-curl -v -X GET "http://127.0.0.1:portNum/domain/url/{boardNumber}" \
- -h "Authorization=Bearer XXXX"
-```
-
-##### Response
-
-###### Response Body
-
-| name | type | description | required |
-|---|:---:|:---:|:---:|
-| code | String | 응답 결과 코드 | O |
-| message | String | 응답 결과 코드에 대한 설명 | O |
-| likes | Integer | 게시물이 받은 좋아요 수 | O |
-
-**응답 성공**
-```bash
-HTTP/1.1 200 OK
-
-{
-  "code": "SU",
-  "message": "Success.",
-  "userNickname": "쾌도",
-  "likes": 2
-}
-```
-
-**응답 : 실패 (존재하지 않는 게시글 에러)**
-```bash
-HTTP/1.1 400 Bad Request
-
-{
-  "code": "NB",
-  "message": "No Exist Board Number."
 }
 ```
 
