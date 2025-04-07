@@ -2,62 +2,7 @@ API 명세서
 
 해당 API 명세서는 '정보 및 커뮤니티 서비스 - 우리 동네 맛집(가칭)'의 REST API를 명세하고 있습니다.
 
-- Domain : 
-
-***
-
-Auth 모듈
-
-우리 동네 맛집 서비스의 인증 및 인가와 관련된 REST API 모듈입니다.
-로그인, 회원가입, 아이디 중복 확인, 닉네임 중복 확인, 이메일 중복확인 등의 API가 포함되어 있습니다.
-Auth 모듈은 인증 없이 요청할 수 있는 모듈입니다.
-
-- url : /...../auth
-
-***
-
-#### - 로그인
-
-##### 설명
-
-클라이언트는 사용자 아이디와 평문의 비밀번호를 포함하여 요청하고 아이디와 비밀번호가 일치한다면 인증에 사용될 token과 해당 token의 만료기간을 응답 데이터로 전달받습니다. 유효성 검사 실패 에러, 로그인 정보 불일치 에러, 서버/데이터베이스 에러
-
-아이디 중복확인
->> 사용할 아이디를 포함하여 요청하고 중복되지 않는다면 성공응답
->> 유효성 검사 실패 에러, 중복된 아이디 에러, 서버/데이터베이스 에러
-
-닉네임 중복확인
->> 사용할 닉네임을 포함하여 요청하고 중복되지 않는다면 성공응답
->> 유효성 검사 실패 에러, 중복된 닉네임 에러, 서버/데이터베이스 에러
-
-이메일 중복확인
->> 사용할 이메일을 포함하여 요청하고 중복되지 않는다면 성공응답
->> 유효성 검사 실패 에러, 중복된 이메일 에러, 서버/데이터베이스 에러
-
-인증번호 미일치
->> 중복확인 성공한 이메일로 전달된 인증번호를 포함하여 요청하고 인증번호가 일치한다면 성공응답
->> 유효성 검사 실패 에러, 인증번호 미일치 에러, 서버/데이터베이스 에러
-
-회원가입
->> 사용자 이름, 사용자 아이디, 사용자 비밀번호, 사용자 닉네임, 사용자 이메일, 사용자 성별, 사용자 주소, 상세주소, SNS 분류를 포함하여 요청하고 회원가입이 성공되면 성공응답
->> 유효성 검사 실패 에러, 아이디 중복 에러, 닉네임 중복 에러, 이메일 중복 에러, 인증번호 미일치 에러, 서버/데이터베이스 에러
-
-SNS 로그인, SNS 회원가입
->> SNS 분류를 포함하여 요청하고 성공시 회원가입이 되어있는 사용자라면 메인페이지로 리다이렉트, 만약 회원가입이 안 된 사용자라면 회원가입 페이지로 리다이렉트
->> 성공응답 : 회원가입 안된 상태 / 회원가입 된 상태
->> OAuth 실패 에러, 데이터베이스 에러
-
-Board 모듈
-
-게시글 작성
-게시글 보기
-게시글 수정
-게시글 삭제
-게시글 좋아요수
-게시글 댓글수
-댓글 작성
-댓글 수정
-댓글 삭제
+- Domain : http://127.0.0.1:(portNum)
 
 ***
 
@@ -67,7 +12,7 @@ MyPage 모듈
 비밀번호 재확인, 게시물 리스트 보기, 내 정보 보기, 내 정보 수정하기 등의 API가 포함되어 있습니다.
 MyPage 모듈은 모두 인증 후 요청할 수 있는 모듈입니다.
 
-- url : /......./myPage
+- url : /......./my-page
 
 ***
 
@@ -78,7 +23,7 @@ MyPage 모듈은 모두 인증 후 요청할 수 있는 모듈입니다.
 클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하고 사용자의 비밀번호를 입력하여 요청하고 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 만약 비밀번호가 일치하지 않는다면 비밀번호 불일치에 대한 응답을 받습니다. 서버 에러, 데이터베이스 에러, 유효성 검사 실패 에러가 발생할 수 있습니다.
 
 - method : **POST**
-- URL : **/~~~/myPage/~**
+- URL : **/password-check**
 
 ##### Request
 
@@ -97,7 +42,7 @@ MyPage 모듈은 모두 인증 후 요청할 수 있는 모듈입니다.
 ###### Example
 
 ```bash
-curl -v -X POST "http://127.0.0.1:portNum/domain/url" \
+curl -v -X POST "http://127.0.0.1:(portNum)/(domain)/my-page/password-check" \
  -h "Authorization=Bearer XXXX" \
  -d "userPassword=qwer1234"
 ```
@@ -162,7 +107,7 @@ HTTP/1.1 500 Internal Server Error
 클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 요청하고 조회가 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 서버 에러, 데이터베이스 에러, 인증 실패가 발생할 수 있습니다.
 
 - method : **GET**
-- URL : **/~~~**
+- URL : **/main**
 
 ##### Request
 
@@ -175,7 +120,7 @@ HTTP/1.1 500 Internal Server Error
 ###### Example
 
 ```bash
-curl -v -X GET "http://127.0.0.1:portNum/domain/url" \
+curl -v -X GET "http://127.0.0.1:(portNum)/(domain)/my-page/main" \
  -h "Authorization=Bearer XXXX"
 ```
 
@@ -193,8 +138,6 @@ curl -v -X GET "http://127.0.0.1:portNum/domain/url" \
 
 ###### Board
 
-###### Example
-
 | name | type | description | required |
 |---|:---:|:---:|:---:|
 | boardNumber | Integer | 사용자가 작성한 게시글 번호 | O |
@@ -206,6 +149,8 @@ curl -v -X GET "http://127.0.0.1:portNum/domain/url" \
 | boardViewCount | Integer | 조회수 | O |
 | likesCount | Integer | 좋아요 수 | O |
 | commentsCount | Integer | 댓글 수 | O |
+
+###### Example
 
 **응답 성공**
 ```bash
@@ -222,7 +167,7 @@ HTTP/1.1 200 OK
       "boardImage": "https://~",
       "userNickname": "쾌도",
       "userLevel": 1,
-      "boardTitle": "안녕하세요.",
+      "boardTitle": "부산시 부산진구의 맛집 소개",
       "boardWriteDate": "2025-04-04",
       "boardViewCount": 10,
       "likesCount": 7,
@@ -261,7 +206,7 @@ HTTP/1.1 500 Internal Server Error
 클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 요청하고 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 데이터베이스 에러가 발생할 수 있습니다.     
 
 - method : **GET**  
-- URL : **/~~~**  
+- URL : **/**
 
 ##### Request
 
@@ -274,7 +219,7 @@ HTTP/1.1 500 Internal Server Error
 ###### Example
 
 ```bash
-curl -X GET "http://127.0.0.1:portNum/domain/~~~" \
+curl -X GET "http://127.0.0.1:(portNum)/(domain)/my-page" \
  -h "Authorization=Bearer XXXX"
 ```
 
@@ -364,7 +309,7 @@ HTTP/1.1 500 Internal Server Error
 ###### Example
 
 ```bash
-curl -v -X PATCH "http://127.0.0.1:4000/api/v1/user" \
+curl -v -X PATCH "http://127.0.0.1:(portNum)/(domain)/my-page" \
  -h "Authorization=Bearer XXXX" \
  -d "userNickname=의적" \
  -d "userPassword=Qwer123$" \

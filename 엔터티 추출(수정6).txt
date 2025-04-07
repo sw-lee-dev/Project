@@ -102,7 +102,7 @@
 - 출발지 주소
 - 도착지 주소
 
-5-2) map
+5-2) map >> MapsAPI로 처리 가능할듯, 추후 추가
 
 - start_address 
 - destination_address 
