@@ -1564,6 +1564,16 @@ HTTP/1.1 400 Bad Reuquest
 }
 ```
 
+**응답 : 실패 (인증 실패)**
+```bash
+HTTP/1.1 401 Unauthorized
+
+{
+  "code": "AF",
+  "message": "Auth fail."
+}
+```
+
 **응답 : 실패 (데이터베이스 에러)**
 ```bash
 HTTP/1.1 500 Internal Server Error
