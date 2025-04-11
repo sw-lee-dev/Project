@@ -1615,6 +1615,7 @@ curl -X GET "http://127.0.0.1:4000/api/v1/my-page/user-info" \
 | address | String | 사용자 주소 | O |
 | detailAddress | String | 사용자 주소 | O |
 | gender | String | 사용자 성별 | O |
+| profileImage | String | 사용자 프로필 이미지 | X |
 
 ###### Example
 
@@ -1631,7 +1632,8 @@ HTTP/1.1 200 OK
   "userPassword": "qwer1234",
   "address": "부산광역시 부산진구 중앙대로 668",
   "detailAddress": "4층 코리아 IT 아카데미",
-  "gender": "남"
+  "gender": "남",
+  "profileImage": "http://~"
 }
 ```
 
@@ -1682,6 +1684,7 @@ HTTP/1.1 500 Internal Server Error
 | userPassword | String | 사용자 비밀번호 | O |
 | address | String | 사용자 주소 | O |
 | detailAddress | String | 사용자 주소 | O |
+| profileImage | String | 사용자 프로필 이미지 | X |
 
 ###### Example
 
@@ -1691,7 +1694,8 @@ curl -v -X PATCH "http://127.0.0.1:4000/api/v1/my-page" \
  -d "userNickname=의적" \
  -d "userPassword=Qwer123$" \
  -d "address=부산광역시 중구" \
- -d "detailAddress=303호"
+ -d "detailAddress=303호" \
+ -d "profileImage=https://~~"
 ```
 
 ##### Response
