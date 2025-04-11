@@ -1611,7 +1611,6 @@ curl -X GET "http://127.0.0.1:4000/api/v1/my-page/user-info" \
 | userId | String | 사용자 아이디 | O |
 | userNickname | String | 사용자 닉네임 | O |
 | name | String | 사용자 이름 | O |
-| userPassword | String | 사용자 비밀번호 | O |
 | address | String | 사용자 주소 | O |
 | detailAddress | String | 사용자 주소 | O |
 | gender | String | 사용자 성별 | O |
@@ -1629,7 +1628,6 @@ HTTP/1.1 200 OK
   "userId": "qwer1234",
   "userNickname": "쾌도",
   "name": "홍길동",
-  "userPassword": "qwer1234",
   "address": "부산광역시 부산진구 중앙대로 668",
   "detailAddress": "4층 코리아 IT 아카데미",
   "gender": "남",
@@ -1663,7 +1661,7 @@ HTTP/1.1 500 Internal Server Error
   
 ##### 설명
 
-클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 사용자 이름을 입력하여 요청하고 회원가입이 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 데이터베이스 에러가 발생할 수 있습니다.  
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 수정할 사용자 정보를 입력하여 요청하고 회원가입이 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 데이터베이스 에러가 발생할 수 있습니다.  
 
 - method : **PATCH**  
 - URL : **/**  
